@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Estudio – Parciales Junio/Julio 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0e0c;
+    --surface: #1a1916;
+    --surface2: #242220;
+    --border: #2e2b27;
+    --text: #e8e3da;
+    --muted: #7a7268;
+    --accent: #c8a96e;
+    --accent2: #8fba8f;
+
+    --ana: #c17b7b;
+    --ana-bg: rgba(193,123,123,0.08);
+    --ana-border: rgba(193,123,123,0.25);
+
+    --datos: #7b9fc1;
+    --datos-bg: rgba(123,159,193,0.08);
+    --datos-border: rgba(123,159,193,0.25);
+
+    --org: #a67bc1;
+    --org-bg: rgba(166,123,193,0.08);
+    --org-border: rgba(166,123,193,0.25);
+
+    --rest: rgba(143,186,143,0.08);
+    --rest-border: rgba(143,186,143,0.2);
+
+    --review: rgba(200,169,110,0.1);
+    --review-border: rgba(200,169,110,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  header {
+    padding: 3rem 2rem 2rem;
+    border-bottom: 1px solid var(--border);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .header-sub {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  /* LEGEND */
+  .legend {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-ana { background: var(--ana); }
+  .dot-datos { background: var(--datos); }
+  .dot-org { background: var(--org); }
+  .dot-gym { background: var(--accent2); }
+  .dot-rest { background: var(--accent); }
+
+  /* EXAM COUNTDOWN */
+  .exams-bar {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .exam-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+  }
+
+  .exam-card.ana { border-color: var(--ana-border); background: var(--ana-bg); }
+  .exam-card.datos { border-color: var(--datos-border); background: var(--datos-bg); }
+  .exam-card.org { border-color: var(--org-border); background: var(--org-bg); }
+
+  .exam-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .exam-date {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .exam-days {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* FILTER TABS */
+  .filters {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.35rem 0.9rem;
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--surface2);
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  /* DAYS GRID */
+  .plan {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 2rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .week-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    padding: 1rem 0 0.25rem;
+    border-top: 1px solid var(--border);
+    margin-top: 0.5rem;
+  }
+
+  .day-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+
+  .day-card.done {
+    opacity: 0.45;
+  }
+
+  .day-card.done .day-header {
+    text-decoration: line-through;
+  }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1.2rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .day-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--muted);
+    width: 2.2rem;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .day-info {
+    flex: 1;
+  }
+
+  .day-name {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text);
+    text-transform: capitalize;
+  }
+
+  .day-subtitle {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .day-tags {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1px solid transparent;
+  }
+
+  .tag-ana { background: var(--ana-bg); color: var(--ana); border-color: var(--ana-border); }
+  .tag-datos { background: var(--datos-bg); color: var(--datos); border-color: var(--datos-border); }
+  .tag-org { background: var(--org-bg); color: var(--org); border-color: var(--org-border); }
+  .tag-gym { background: rgba(143,186,143,0.1); color: var(--accent2); border-color: var(--rest-border); }
+  .tag-rest { background: var(--review); color: var(--accent); border-color: var(--review-border); }
+  .tag-review { background: var(--review); color: var(--accent); border-color: var(--review-border); }
+
+  .chevron {
+    color: var(--muted);
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .day-card.open .chevron { transform: rotate(90deg); }
+
+  .day-body {
+    display: none;
+    padding: 0 1.2rem 1.2rem 4rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .day-card.open .day-body { display: block; }
+
+  .block {
+    margin-top: 1rem;
+  }
+
+  .block-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+  }
+
+  .block-content {
+    font-size: 0.82rem;
+    color: var(--text);
+    line-height: 1.65;
+  }
+
+  .block-content strong {
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .tip {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.9rem;
+    border-left: 2px solid var(--accent);
+    background: var(--review);
+    border-radius: 0 4px 4px 0;
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* DONE BUTTON */
+  .done-btn {
+    margin-top: 1rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+  }
+
+  .done-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+  .day-card.done .done-btn { border-color: var(--border); color: var(--muted); }
+
+  /* EXAM DAY */
+  .exam-day .day-header { background: var(--review); }
+  .exam-day .day-num { color: var(--accent); }
+
+  /* PROGRESS */
+  .progress-bar {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  .bar-bg {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--ana), var(--datos), var(--org));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  @media (max-width: 600px) {
+    header, .legend, .exams-bar, .plan, .filters, .progress-bar { padding-left: 1rem; padding-right: 1rem; }
+    .exams-bar { grid-template-columns: 1fr; }
+    .day-body { padding-left: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">Plan de estudio · Junio – Julio 2026</div>
+  <h1>Tres parciales.<br><em>Un plan.</em></h1>
+  <p class="header-sub">4 horas/día · Flexible · Integrado · Con cabeza</p>
+</header>
+
+<div class="exams-bar">
+  <div class="exam-card ana">
+    <div class="exam-name">Anatomía e Histología</div>
+    <div class="exam-date">24 jun</div>
+    <div class="exam-days">17 días · Martes</div>
+  </div>
+  <div class="exam-card datos">
+    <div class="exam-name">Análisis de Datos</div>
+    <div class="exam-date">29 jun</div>
+    <div class="exam-days">22 días · Domingo</div>
+  </div>
+  <div class="exam-card org">
+    <div class="exam-name">Química Orgánica</div>
+    <div class="exam-date">01 jul</div>
+    <div class="exam-days">24 días · Miércoles</div>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-label">
+    <span>Progreso del plan</span>
+    <span id="progress-text">0 / 24 días</span>
+  </div>
+  <div class="bar-bg"><div class="bar-fill" id="bar-fill" style="width:0%"></div></div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="dot dot-ana"></div> Anatomía</div>
+  <div class="legend-item"><div class="dot dot-datos"></div> Análisis de Datos</div>
+  <div class="legend-item"><div class="dot dot-org"></div> Orgánica</div>
+  <div class="legend-item"><div class="dot dot-gym"></div> Gym</div>
+  <div class="legend-item"><div class="dot dot-rest"></div> Repaso / Descanso</div>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" onclick="filter('all', this)">Todos</button>
+  <button class="filter-btn" onclick="filter('ana', this)">Anatomía</button>
+  <button class="filter-btn" onclick="filter('datos', this)">Análisis</button>
+  <button class="filter-btn" onclick="filter('org', this)">Orgánica</button>
+  <button class="filter-btn" onclick="filter('gym', this)">Gym</button>
+  <button class="filter-btn" onclick="filter('rest', this)">Descanso</button>
+</div>
+
+<div class="plan" id="plan"></div>
+
+<script>
+const days = [
+  // SEMANA 1
+  {
+    week: "Semana 1 — Enfoque Anatomía + arranque suave",
+    date: "08 jun", day: "Domingo", num: "08",
+    subtitle: "Arranque. Mente fresca.",
+    tags: ["ana","datos"],
+    blocks: [
+      { time: "Bloque 1 · 2 hs", content: "<strong>Anatomía – Sistema Nervioso (parte 1):</strong> Organización general del SNC y SNP. División funcional (somático vs autónomo). Neuronas: morfología, tipos, clasificación. Lecé el resumen, hacé un mapa conceptual de organización. Método blurting al cerrar." },
+      { time: "Bloque 2 · 1.5 hs", content: "<strong>Análisis de Datos – Cap. 5 (inicio):</strong> Concepto de estimación puntual y por intervalo. IC para media con varianza conocida y desconocida. Leé y hacé un resumen escrito. No profundices aún, solo entiende el marco general." },
+      { time: "Descanso activo · 30 min", content: "Caminá, estirá, no pantallas." }
+    ],
+    tip: "Primer día: no sobrecargues. Que el arranque sea sostenible."
+  },
+  {
+    date: "09 jun", day: "Lunes", num: "09",
+    subtitle: "Clase + estudio vespertino.",
+    tags: ["ana","org"],
+    blocks: [
+      { time: "Después de clase · 2 hs", content: "<strong>Anatomía – Sistema Nervioso (parte 2):</strong> Médula espinal: estructura, tractos ascendentes/descendentes. Encéfalo: partes, funciones generales. Flashcards para regiones y funciones." },
+      { time: "Bloque 2 · 1.5 hs", content: "<strong>Orgánica – Sustitución Electrofílica Aromática (SEA):</strong> Mecanismo general. Electrófilo, complejo sigma, halogenación. Leé el capítulo, hacé el esquema mecanístico." },
+      { time: "30 min", content: "Repaso rápido: revisá los mapas de hoy y del día anterior. 5 min por tema." }
+    ],
+    tip: "Orgánica requiere dibujar mecanismos en papel. Nada de solo leer."
+  },
+  {
+    date: "10 jun", day: "Martes", num: "10",
+    subtitle: "Día de clase.",
+    tags: ["ana","gym"],
+    blocks: [
+      { time: "Bloque único · 3 hs", content: "<strong>Anatomía – SNC continuación:</strong> Sistema límbico y funciones. Cerebelo: estructura y función. Tronco encefálico: mesencéfalo, protuberancia, bulbo. Hacé un cuadro comparativo de funciones. Cerrá con blurting." },
+      { time: "Gym + recuperación · 1 hs", content: "Entrenamiento del día. Prioridad para el cuerpo." }
+    ],
+    tip: "Después del gym el cerebro consolida bien. Si podés releer 10 min antes de dormir, perfecto."
+  },
+  {
+    date: "11 jun", day: "Miércoles", num: "11",
+    subtitle: "Clase + doble materia.",
+    tags: ["ana","datos","org"],
+    blocks: [
+      { time: "Bloque 1 · 1.5 hs", content: "<strong>Anatomía – Sistema Nervioso (parte 3 / cierre):</strong> SNP: nervios craneales (los 12, nombres y función general). Sistema nervioso autónomo: simpático vs parasimpático. Tabla resumen." },
+      { time: "Bloque 2 · 1 hs", content: "<strong>Análisis de Datos – IC para proporciones + tamaño muestral:</strong> Fórmulas, condiciones de aplicación. Practicá 3-4 ejercicios del apunte." },
+      { time: "Bloque 3 · 1 hs", content: "<strong>Orgánica – SEA continuación:</strong> Nitración, sulfonación, alquilación Friedel-Crafts. Directores de grupo: orto-para vs meta. Ejercicios de predicción de productos." }
+    ],
+    tip: "Día pesado por las clases. Está bien si hacés solo 2 bloques de los 3."
+  },
+  {
+    date: "12 jun", day: "Jueves", num: "12",
+    subtitle: "Libre. Jornada de profundización.",
+    tags: ["ana","org"],
+    blocks: [
+      { time: "Bloque 1 · 2 hs", content: "<strong>Anatomía – Sistema Endocrino (parte 1):</strong> Concepto de glándula endocrina vs exocrina. Hipotálamo e hipófisis: eje hipotálamo-hipofisario, hormonas adenohipofisarias y neurohipofisarias. Mapa conceptual del eje." },
+      { time: "Bloque 2 · 2 hs", content: "<strong>Orgánica – SEA: ejercicios integradores:</strong> Resolución de ejercicios completos: predecir productos, justificar regioselectividad, comparar reactividad de distintos bencenos sustituidos. Corregí cada uno antes de avanzar." }
+    ],
+    tip: "Jueves libre = el día más productivo de la semana. Aprovechalo sin culpa ni prisa."
+  },
+  {
+    date: "13 jun", day: "Viernes", num: "13",
+    subtitle: "Clase + continuación endocrina.",
+    tags: ["ana","datos","gym"],
+    blocks: [
+      { time: "Bloque 1 · 1.5 hs", content: "<strong>Anatomía – Sistema Endocrino (parte 2):</strong> Tiroides e histología tiroidea (folículos, coloide). Paratiroides. Suprarrenales: corteza (capas) y médula. Hacé flashcards por glándula." },
+      { time: "Bloque 2 · 1.5 hs", content: "<strong>Análisis de Datos – Test de hipótesis (intro):</strong> Hipótesis nula y alternativa. Error tipo I y II. Nivel de significancia. Valor p. Leé la teoría, resumí con tus palabras." },
+      { time: "Gym", content: "Entrenamiento del día." }
+    ],
+    tip: "En endocrinología, la histología va de la mano de la función. Siempre asociá estructura-función."
+  },
+  {
+    date: "14 jun", day: "Sábado", num: "14",
+    subtitle: "Repaso + consolidación semana 1.",
+    tags: ["rest","ana"],
+    blocks: [
+      { time: "Bloque 1 · 2 hs", content: "<strong>REPASO SEMANAL – Anatomía:</strong> SN completo + inicio endocrino. Método: cerrá todo y hacé blurting por sistema. Identificá los baches, anotálos, volvé a esos puntos." },
+      { time: "Bloque 2 · 1 hs", content: "<strong>Orgánica:</strong> Releer resumen de SEA. Hacer 2 ejercicios de práctica de memoria (sin ver la teoría)." },
+      { time: "1 hs", content: "Tiempo libre real. Desconexión completa." }
+    ],
+    tip: "El sábado es para consolidar, no para aprender cosas nuevas. Si el repaso te muestra que entendiste todo, excelente."
+  },
+
+  // SEMANA 2
+  {
+    week: "Semana 2 — Digestivo + Test de hipótesis + Alquenos",
+    date: "15 jun", day: "Domingo", num: "15",
+    subtitle: "Carga media. Nuevo sistema.",
+    tags: ["ana","datos","org"],
+    blocks: [
+      { time: "Bloque 1 · 1.5 hs", content: "<strong>Anatomía – Sistema Digestivo (parte 1):</strong> Organización general del tubo digestivo. Capas histológicas (mucosa, submucosa, muscular, serosa). Boca, faringe, esófago: histología y función." },
+      { time: "Bloque 2 · 1.5 hs", content: "<strong>Análisis de Datos – Test Z y T:</strong> Prueba Z para media con σ conocida. T de Student para una muestra. Región crítica, valor crítico. Practicá 2-3 ejercicios." },
+      { time: "Bloque 3 · 1 hs", content: "<strong>Orgánica – Adición en alquenos (intro):</strong> Tipos de adición: electrofílica. Regla de Markovnikov. HX en alquenos. Mecanismo detallado." }
+    ],
+    tip: "Tercer materia en el plato: Orgánica con alquenos. No te apures, van uno a la vez."
+  },
+  {
+    date: "16 jun", day: "Lunes", num: "16",
+    subtitle: "Clase + profundización digestivo.",
+    tags: ["ana","gym"],
+    blocks: [
+      { time: "Bloque post-clase · 2.5 hs", content: "<strong>Anatomía – Sistema Digestivo (parte 2):</strong> Estómago: regiones, histología, células parietales y principales, pepsinógeno, HCl. Intestino delgado: vellosidades, microvellosidades, enterocitos, absorción. Flashcards por segmento." },
+      { time: "Gym + descanso · 1 hs + 30 min", content: "Entrenamiento y recuperación." }
+    ],
+    tip: "El estómago tiene mucha histología específica. Hacé un esquema dibujado a mano de la pared gástrica."
+  },
+  {
+    date: "17 jun", day: "Martes", num: "17",
+    subtitle: "Clase.",
+    tags: ["ana","datos"],
+    blocks: [
+      { time: "Bloque único · 3 hs", content: "<strong>Anatomía – Digestivo (parte 3):</strong> Intestino grueso: colon, recto, canal anal. Hígado: estructura del lobulillo clásico, células de Kupffer, bilis. Páncreas: endocrino (islotes) y exocrino (ácinos). Cierre con mapa completo del sistema digestivo." },
+      { time: "30 min", content: "<strong>Análisis de Datos:</strong> Releer resumen de test de hipótesis de los días anteriores." }
+    ],
+    tip: "Hígado y páncreas son los más preguntados en parcial. Ponele atención a los detalles histológicos."
+  },
+  {
+    date: "18 jun", day: "Miércoles", num: "18",
+    subtitle: "Clase + orgánica.",
+    tags: ["org","datos"],
+    blocks: [
+      { time: "Bloque 1 · 2 hs", content: "<strong>Orgánica – Adición en alquenos (continuación):</strong> Adición de H₂O (hidratación). Adición de X₂ (halogenación). Epoxidación. Ozonólisis. Hacer todos los mecanismos en papel, predecir productos." },
+      { time: "Bloque 2 · 1.5 hs", content: "<strong>Análisis de Datos – Dos muestras (intro):</strong> Inferencias basadas en dos muestras independientes. Prueba T para medias independientes. Comparar varianzas con prueba F." }
+    ],
+    tip: ""
+  },
+  {
+    date: "19 jun", day: "Jueves", num: "19",
+    subtitle: "Libre. Doble jornada estratégica.",
+    tags: ["ana","org","gym"],
+    blocks: [
+      { time: "Bloque 1 · 2 hs", content: "<strong>Anatomía – Sistema Genital (parte 1):</strong> Aparato reproductor masculino: testículo (túbulos seminíferos, células de Sertoli y Leydig), epidídimo, conductos. Histología del testículo. Flashcards." },
+      { time: "Bloque 2 · 2 hs", content: "<strong>Orgánica – Alquinos + adición nucleofílica (intro):</strong> Reactividad de alquinos frente a adición electrofílica. Hidratación de alquinos (enol → cetona). Adición nucleofílica: aldehídos y cetonas, mecanismo general." },
+      { time: "Gym", content: "Entrenamiento del día." }
+    ],
+    tip: "Jueves de semana 2, la semana más cargada. Hacé lo que puedas sin forzarte."
+  },
+  {
+    date: "20 jun", day: "Viernes", num: "20",
+    subtitle: "Clase + cierre pre-parcial.",
+    tags: ["ana","datos"],
+    blocks: [
+      { time: "Bloque 1 · 2 hs", content: "<strong>Anatomía – Sistema Genital (parte 2):</strong> Aparato reproductor femenino: ovario (folículos en distintos estadios, cuerpo lúteo), útero (endometrio, ciclo menstrual), trompas, vagina. Cuadro comparativo M/F." },
+      { time: "Bloque 2 · 1.5 hs", content: "<strong>Análisis de Datos – Dos muestras (continuación):</strong> Muestras pareadas (T para diferencias). Inferencia sobre proporciones en dos poblaciones. Ejercicios de práctica." }
+    ],
+    tip: "Último viernes antes del parcial de Anatomía. Mañana y el fin de semana son repaso puro."
+  },
+
+  // PRE-PARCIAL ANATOMIA
+  {
+    week: "Semana 3 — Repaso intensivo Anatomía + avance Datos y Orgánica",
+    date: "21 jun", day: "Sábado", num: "21",
+    subtitle: "Repaso 1 – Anatomía (SN + Endocrino).",
+    tags: ["rest","ana"],
+    blocks: [
+      { time: "Bloque 1 · 2 hs", content: "<strong>REPASO – Sistema Nervioso completo:</strong> Blurting total: cerrá todo y escribí de memoria todo lo que sabés del SN. Central y periférico. Revisá lo que te faltó. Hacé 20 flashcards rápidas." },
+      { time: "Bloque 2 · 2 hs", content: "<strong>REPASO – Sistema Endocrino:</strong> Hipófisis, tiroides, suprarrenales, páncreas endocrino. Repasá el eje hipotálamo-hipofisario. Test mental: cubrís las funciones, te preguntás la estructura." }
+    ],
+    tip: "No entres material nuevo. Solo consolida lo que ya sabés."
+  },
+  {
+    date: "22 jun", day: "Domingo", num: "22",
+    subtitle: "Repaso 2 – Anatomía (Digestivo + Genital).",
+    tags: ["rest","ana"],
+    blocks: [
+      { time: "Bloque 1 · 2 hs", content: "<strong>REPASO – Sistema Digestivo:</strong> Desde boca hasta recto + hígado y páncreas. Focalizate en histología: capas del tubo, vellosidades, lobulillo hepático, islotes de Langerhans. Dibujá de memoria." },
+      { time: "Bloque 2 · 1.5 hs", content: "<strong>REPASO – Sistema Genital + Sistema Urinario (intro rápida):</strong> Repasá genital masculino y femenino. Luego hacé una lectura general del sistema urinario: riñón, nefrona, histología del túbulo. No te quedes pegada: es solo para no llegar en blanco." },
+      { time: "30 min", content: "Descansá. Dormí bien esta noche." }
+    ],
+    tip: "El sistema urinario puede que no esté tan estudiado. Con una lectura atenta del resumen y los esquemas ya tenés una base."
+  },
+  {
+    date: "23 jun", day: "Lunes", num: "23",
+    subtitle: "Día antes del parcial de Anatomía.",
+    tags: ["rest","ana","gym"],
+    blocks: [
+      { time: "Mañana · 2 hs", content: "<strong>Repaso final de Anatomía:</strong> No aprendas nada nuevo. Revisá tus flashcards, tus mapas, los dibujos. Si tenés dudas puntuales, resolvélas rápido. Después, cerrá el libro." },
+      { time: "Tarde", content: "Descansá. Caminá, comé bien, hidratate. Si vas al gym, sesión ligera." },
+      { time: "Noche", content: "Dormí temprano. El cerebro consolida mientras dormís." }
+    ],
+    tip: "La ansiedad de último momento te hace creer que estudiaste menos de lo que estudiaste. Confiá en el proceso."
+  },
+  {
+    date: "24 jun", day: "Martes", num: "24",
+    subtitle: "🎯 PARCIAL – Anatomía e Histología",
+    tags: ["rest"],
+    exam: true,
+    blocks: [
+      { time: "Antes del parcial", content: "Desayuná bien. Revisá solo tus apuntes clave (máx 20 min). No abras el libro completo." },
+      { time: "Después del parcial", content: "¡Celebrá! Salí, comé algo rico, descansá. Nada de estudiar hoy." }
+    ],
+    tip: "Ya hiciste todo el trabajo. Ahora es solo mostrarlo."
+  },
+
+  // POST-ANA, pre-DATOS y ORG
+  {
+    date: "25 jun", day: "Miércoles", num: "25",
+    subtitle: "Clase + vuelta al ruedo.",
+    tags: ["datos","org"],
+    blocks: [
+      { time: "Bloque 1 · 2 hs", content: "<strong>Análisis de Datos – Regresión Lineal Simple (intro):</strong> Modelo de regresión, recta de mínimos cuadrados, coeficientes β₀ y β₁, interpretación. Hacé un resumen con fórmulas clave y sus interpretaciones en contexto." },
+      { time: "Bloque 2 · 1.5 hs", content: "<strong>Orgánica – Adición nucleofílica (continuación):</strong> Adición de RMgX (Grignard). Adición de CN⁻. Reducción de grupos carbonilo (NaBH₄, LiAlH₄). Completá los mecanismos en papel." }
+    ],
+    tip: "Un día después del primer parcial, la cabeza ya puede pensar en otra cosa. Arrancá suave."
+  },
+  {
+    date: "26 jun", day: "Jueves", num: "26",
+    subtitle: "Libre. Jornada de avance.",
+    tags: ["datos","org","gym"],
+    blocks: [
+      { time: "Bloque 1 · 2 hs", content: "<strong>Análisis de Datos – Regresión Lineal (profundización):</strong> Supuestos del modelo, ANOVA de la regresión, R², inferencia sobre los coeficientes (IC y test t). Practicá con un dataset sencillo del apunte." },
+      { time: "Bloque 2 · 2 hs", content: "<strong>Orgánica – Reacciones redox + ácido-base:</strong> Oxidación de alcoholes (PCC, KMnO₄, CrO₃). Reducción de carbonilo. Acidez de alcoholes, fenoles y ácidos carboxílicos. Ejercicios integradores." },
+      { time: "Gym", content: "Entrenamiento del día." }
+    ],
+    tip: ""
+  },
+  {
+    date: "27 jun", day: "Viernes", num: "27",
+    subtitle: "Clase + repaso integrador.",
+    tags: ["datos","org"],
+    blocks: [
+      { time: "Bloque 1 · 2 hs", content: "<strong>Análisis de Datos – REPASO INTEGRADOR:</strong> Estimación, test de hipótesis (1 muestra), dos muestras, regresión. Hacé un mapa de qué prueba usar según cada situación. Resolvé un ejercicio de cada tipo." },
+      { time: "Bloque 2 · 1.5 hs", content: "<strong>Orgánica – Espectroscopía (intro):</strong> IR: grupos funcionales principales y sus frecuencias características. RMN ¹H: desplazamiento químico, multiplicidad, integración. Leé la teoría con ejemplos." }
+    ],
+    tip: "En regresión no te pierdas: siempre interpretá los coeficientes en contexto. El número solo no alcanza."
+  },
+  {
+    date: "28 jun", day: "Sábado", num: "28",
+    subtitle: "Repaso 1 – Análisis de Datos.",
+    tags: ["rest","datos"],
+    blocks: [
+      { time: "Bloque 1 · 2 hs", content: "<strong>REPASO PURO – Análisis de Datos:</strong> Blurting del contenido completo: estimación, IC, test de hipótesis, dos muestras, regresión. Usá el mapa que hiciste como guía. Identificá lo que no salió bien." },
+      { time: "Bloque 2 · 1.5 hs", content: "<strong>Práctica de ejercicios:</strong> Resolvé 4-5 ejercicios variados sin mirar el procedimiento. Corregís después. Focalizate en los tipos que más te cuestan." }
+    ],
+    tip: "Mañana es el parcial. Hoy es el último día de práctica activa."
+  },
+  {
+    date: "29 jun", day: "Domingo", num: "29",
+    subtitle: "🎯 PARCIAL – Análisis de Datos",
+    tags: ["rest"],
+    exam: true,
+    blocks: [
+      { time: "Antes", content: "Repaso mínimo: tu mapa de qué prueba usar. Fórmulas clave anotadas. Nada más." },
+      { time: "Después", content: "Descansá bien. Tenés 2 días para el parcial de Orgánica. Ese es el momento de seguir, no ahora." }
+    ],
+    tip: "Confiá en tu preparación. Ya hiciste el trabajo."
+  },
+
+  // PRE-ORGÁNICA
+  {
+    date: "30 jun", day: "Lunes", num: "30",
+    subtitle: "Repaso 2 – Química Orgánica.",
+    tags: ["rest","org","gym"],
+    blocks: [
+      { time: "Bloque 1 · 2 hs", content: "<strong>REPASO – SEA + Alquenos + Alquinos:</strong> Blurting de mecanismos. Escribí de memoria: mecanismo de SEA con directores, adición de HX a alquenos (Markovnikov), hidratación de alquinos. Revisá los errores." },
+      { time: "Bloque 2 · 1.5 hs", content: "<strong>REPASO – Adición nucleofílica + redox + ácido-base:</strong> Grignard, reducciones, oxidaciones, escala de acidez. Ejercicios sin mirar la teoría." },
+      { time: "Gym (opcional)", content: "Si te hace bien moverse, andá. Si estás muy cansada, saltéalo." }
+    ],
+    tip: "Segundo parcial en el bolsillo. Ahora toda la energía a Orgánica."
+  },
+  {
+    date: "01 jul", day: "Martes", num: "01",
+    subtitle: "Repaso final – Espectroscopía + cierre.",
+    tags: ["rest","org"],
+    blocks: [
+      { time: "Mañana · 1.5 hs", content: "<strong>REPASO – Espectroscopía:</strong> IR y RMN. Practicá interpretando espectros del apunte. Identificá grupos funcionales, desplazamientos típicos. Hacé un mini-resumen de las señales clave." },
+      { time: "Media mañana · 1 hs", content: "<strong>Repaso general Orgánica:</strong> Tu resumen completo, rápido. Revisá los puntos que marcaste como débiles." },
+      { time: "Tarde", content: "Descansá. No estudies más. Comé bien, dormí temprano." }
+    ],
+    tip: "Ya diste dos parciales. Llegás a Orgánica más curtida. Confiá en lo que trabajaste estas semanas."
+  },
+  {
+    date: "02 jul", day: "Miércoles", num: "02",
+    subtitle: "🎯 PARCIAL – Química Orgánica",
+    tags: ["rest"],
+    exam: true,
+    blocks: [
+      { time: "Antes", content: "Repaso mínimo de tus esquemas de mecanismos. Confiá en el proceso." },
+      { time: "Después", content: "¡Terminaste los tres parciales! Celebrá como merecés." }
+    ],
+    tip: "Tres parciales en 24 días con gym, clases y cordura. Eso es gestión real."
+  }
+];
+
+function renderPlan() {
+  const container = document.getElementById('plan');
+  const saved = JSON.parse(localStorage.getItem('planProgress') || '{}');
+  let html = '';
+  let weekLabel = '';
+
+  days.forEach((d, i) => {
+    if (d.week) {
+      html += `<div class="week-label">${d.week}</div>`;
+    }
+    const isDone = saved[i] || false;
+    const tagSet = d.tags.map(t => `<span class="tag tag-${t}">${tagLabel(t)}</span>`).join('');
+    const examClass = d.exam ? ' exam-day' : '';
+    const doneClass = isDone ? ' done' : '';
+
+    let blocksHtml = d.blocks.map(b => `
+      <div class="block">
+        <div class="block-time">${b.time}</div>
+        <div class="block-content">${b.content}</div>
+      </div>
+    `).join('');
+
+    if (d.tip) {
+      blocksHtml += `<div class="tip">💡 ${d.tip}</div>`;
+    }
+
+    blocksHtml += `<button class="done-btn" onclick="toggleDone(${i}, event)">${isDone ? '↩ Marcar como pendiente' : '✓ Marcar como completado'}</button>`;
+
+    html += `
+      <div class="day-card${examClass}${doneClass}" id="day-${i}" data-tags="${d.tags.join(',')}">
+        <div class="day-header" onclick="toggleDay(${i})">
+          <div class="day-num">${d.num}</div>
+          <div class="day-info">
+            <div class="day-name">${d.day} ${d.date}</div>
+            <div class="day-subtitle">${d.subtitle}</div>
+          </div>
+          <div class="day-tags">${tagSet}</div>
+          <div class="chevron">▶</div>
+        </div>
+        <div class="day-body">${blocksHtml}</div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+  updateProgress();
+}
+
+function tagLabel(t) {
+  const map = { ana: 'Anatomía', datos: 'Datos', org: 'Orgánica', gym: 'Gym', rest: 'Descanso', review: 'Repaso' };
+  return map[t] || t;
+}
+
+function toggleDay(i) {
+  const card = document.getElementById('day-' + i);
+  card.classList.toggle('open');
+}
+
+function toggleDone(i, e) {
+  e.stopPropagation();
+  const saved = JSON.parse(localStorage.getItem('planProgress') || '{}');
+  saved[i] = !saved[i];
+  localStorage.setItem('planProgress', JSON.stringify(saved));
+  renderPlan();
+}
+
+function updateProgress() {
+  const saved = JSON.parse(localStorage.getItem('planProgress') || '{}');
+  const done = Object.values(saved).filter(Boolean).length;
+  const total = days.length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('progress-text').textContent = `${done} / ${total} días`;
+  document.getElementById('bar-fill').style.width = pct + '%';
+}
+
+function filter(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.day-card').forEach(card => {
+    const tags = card.dataset.tags.split(',');
+    card.style.display = (type === 'all' || tags.includes(type)) ? '' : 'none';
+  });
+  document.querySelectorAll('.week-label').forEach(l => l.style.display = type === 'all' ? '' : 'none');
+}
+
+renderPlan();
+</script>
+</body>
+</html>
